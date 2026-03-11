@@ -377,14 +377,14 @@
     const textEl  = document.getElementById('reason-text');
     const badgeEl = document.getElementById('category-badge');
 
-    /*
+    
     // pick a different reason each time
     let idx;
     do { idx = Math.floor(Math.random() * reasons.length); } while (idx === lastIndex);
     lastIndex = idx;
 
     const chosen = reasons[idx];
-    const meta   = categoryMeta[chosen.category];*/
+    const meta   = categoryMeta[chosen.category];
     
 
     fetch('https://naas.isalman.dev/no')
@@ -408,8 +408,8 @@
 
     setTimeout(() => {
       //textEl.textContent = chosen.text;
-      //badgeEl.textContent = meta.label;
-      //badgeEl.className   = `category-badge ${meta.cls}`;
+      badgeEl.textContent = meta.label;
+      badgeEl.className   = `category-badge ${meta.cls}`;
       textEl.classList.remove('fade-out');
       count++;
       document.getElementById('refusal-count').textContent = count;
@@ -434,3 +434,4 @@
 </script>
 </body>
 </html>
+
