@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Polite Refusal</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #F7F4EF;
+    --ink: #1A1814;
+    --warm-gray: #8C8880;
+    --accent: #C8551B;
+    --accent-light: #F0D5C8;
+    --card-bg: #FFFFFF;
+    --border: #E8E4DE;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background-color: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── HEADER ─────────────────────────────────────────── */
+  header {
+    padding: 2rem 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .tagline-pill {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--warm-gray);
+    border: 1px solid var(--border);
+    padding: 0.35rem 0.85rem;
+    border-radius: 100px;
+  }
+
+  /* ── HERO ────────────────────────────────────────────── */
+  .hero {
+    padding: 6rem 2.5rem 4rem;
+    max-width: 820px;
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+  }
+
+  .hero-eyebrow::before,
+  .hero-eyebrow::after {
+    content: '';
+    display: inline-block;
+    width: 2rem;
+    height: 1px;
+    background: var(--accent);
+    opacity: 0.6;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 8vw, 5.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-sub {
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: var(--warm-gray);
+    max-width: 440px;
+    margin: 0 auto 3rem;
+    line-height: 1.65;
+  }
+
+  /* ── GENERATOR CARD ──────────────────────────────────── */
+  .generator-wrap {
+    max-width: 680px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 0 2.5rem 6rem;
+  }
+
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 3rem;
+    position: relative;
+    box-shadow: 0 4px 40px rgba(26,24,20,0.06), 0 1px 4px rgba(26,24,20,0.04);
+  }
+
+  .card::before {
+    content: '\201C';
+    font-family: 'Playfair Display', serif;
+    font-size: 8rem;
+    line-height: 1;
+    color: var(--accent-light);
+    position: absolute;
+    top: 1rem;
+    left: 2rem;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .category-badge {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.8rem;
+    border-radius: 100px;
+    margin-bottom: 1.5rem;
+    transition: all 0.4s ease;
+  }
+
+  .badge-professional { background: #EAF0FF; color: #3B5BDB; }
+  .badge-graceful     { background: #F0FAF0; color: #2F7A3A; }
+  .badge-funny        { background: #FFF8E1; color: #B07D00; }
+
+  #reason-text {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.25rem, 2.5vw, 1.6rem);
+    line-height: 1.55;
+    color: var(--ink);
+    min-height: 5rem;
+    position: relative;
+    z-index: 1;
+    transition: opacity 0.35s ease, transform 0.35s ease;
+  }
+
+  #reason-text.fade-out {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  .card-footer {
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-generate {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: #fff;
+    background: var(--accent);
+    border: none;
+    padding: 0.9rem 2rem;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 16px rgba(200,85,27,0.3);
+  }
+
+  .btn-generate:hover {
+    background: #B04515;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 24px rgba(200,85,27,0.35);
+  }
+
+  .btn-generate:active { transform: translateY(0); }
+
+  .btn-copy {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 400;
+    color: var(--warm-gray);
+    background: transparent;
+    border: 1px solid var(--border);
+    padding: 0.85rem 1.6rem;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .btn-copy:hover { border-color: var(--ink); color: var(--ink); }
+  .btn-copy.copied { border-color: #2F7A3A; color: #2F7A3A; }
+
+  /* ── COUNTER ──────────────────────────────────────────── */
+  .counter-wrap {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 0.8rem;
+    color: var(--warm-gray);
+    letter-spacing: 0.04em;
+  }
+
+  #refusal-count { font-weight: 500; color: var(--accent); }
+
+  /* ── TONES LEGEND ────────────────────────────────────── */
+  .tones {
+    max-width: 680px;
+    margin: 0 auto 5rem;
+    padding: 0 2.5rem;
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .tone-item {
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: var(--warm-gray);
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  .tone-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ── FOOTER ──────────────────────────────────────────── */
+  footer {
+    margin-top: auto;
+    padding: 1.8rem 2.5rem;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-size: 0.78rem;
+    color: var(--warm-gray);
+    letter-spacing: 0.03em;
+  }
+
+  /* ── ANIMATIONS ───────────────────────────────────────── */
+  @keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero        { animation: fadeSlideIn 0.7s ease both; }
+  .generator-wrap { animation: fadeSlideIn 0.7s 0.15s ease both; }
+  .tones       { animation: fadeSlideIn 0.7s 0.25s ease both; }
+
+  /* ── RESPONSIVE ───────────────────────────────────────── */
+  @media (max-width: 600px) {
+    header { padding: 1.25rem 1.5rem; }
+    .hero { padding: 4rem 1.5rem 3rem; }
+    .generator-wrap, .tones { padding: 0 1.5rem; }
+    .generator-wrap { padding-bottom: 4rem; }
+    .card { padding: 2rem 1.5rem; }
+    .card-footer { flex-direction: column-reverse; align-items: stretch; text-align: center; }
+    .btn-generate, .btn-copy { width: 100%; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="#">The Polite Refusal</a>
+  <span class="tagline-pill">Your peace, protected</span>
+</header>
+
+<section class="hero">
+  <p class="hero-eyebrow">A boundary toolkit</p>
+  <h1>Protect Your<br><em>Peace.</em></h1>
+  <p class="hero-sub">Because "I don't want to" is a complete sentence — but sometimes you need a little help saying it.</p>
+</section>
+
+<div class="generator-wrap">
+  <div class="card">
+    <span id="category-badge" class="category-badge badge-professional">Firm &amp; Professional</span>
+    <p id="reason-text">Click the button below to generate your perfectly crafted reason.</p>
+    <div class="card-footer">
+      <button class="btn-generate" onclick="generate()">✦ Generate a Reason</button>
+      <button class="btn-copy" id="copy-btn" onclick="copyReason()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+        Copy
+      </button>
+    </div>
+  </div>
+  <div class="counter-wrap">
+    <span id="refusal-count">0</span> refusals generated today
+  </div>
+</div>
+
+<div class="tones">
+  <span class="tone-item"><span class="tone-dot" style="background:#3B5BDB"></span>Firm &amp; Professional</span>
+  <span class="tone-item"><span class="tone-dot" style="background:#2F7A3A"></span>Socially Graceful</span>
+  <span class="tone-item"><span class="tone-dot" style="background:#B07D00"></span>Lighthearted &amp; Funny</span>
+</div>
+
+<footer>
+  Say no with grace. Your calendar is not a democracy. ✦
+</footer>
+
+<script>
+  const reasons = [
+    { text: "I appreciate the invitation, but I've reached my capacity for commitments this month and need to decline.",           category: "professional" },
+    { text: "That falls outside my current priorities. I'll need to pass — but thank you for thinking of me.",                    category: "professional" },
+    { text: "I'm protecting a block of deep-work time I've already committed to. I'll have to sit this one out.",                 category: "professional" },
+    { text: "I don't have the bandwidth to give this the attention it deserves right now, so I'll respectfully decline.",         category: "professional" },
+    { text: "My plate is genuinely full at the moment. I wouldn't be able to show up as my best self, so I'll pass.",            category: "professional" },
+    { text: "I'm going to decline — I've found that saying yes when I mean no doesn't serve either of us well.",                  category: "professional" },
+    { text: "I'd love to, but I have a prior commitment I really need to honor. Another time, I hope!",                           category: "graceful" },
+    { text: "That sounds wonderful, and I genuinely wish I could — but I've already promised that time to someone else.",         category: "graceful" },
+    { text: "I'm going to sit this one out, but please keep me in the loop for next time.",                                       category: "graceful" },
+    { text: "I need a quiet evening to recharge, but I hope it's a lovely time. Tell me all about it after!",                    category: "graceful" },
+    { text: "I'm going to take care of myself that day — but I truly appreciate the invitation.",                                 category: "graceful" },
+    { text: "I'm sending all my good energy your way, but I won't be joining. You'll be brilliant without me!",                  category: "graceful" },
+    { text: "I'd rather miss it than half-attend — you deserve someone fully present.",                                           category: "graceful" },
+    { text: "My imaginary plans already got there first. Prior commitment to myself, you understand.",                           category: "funny" },
+    { text: "My couch and I have had this date scheduled for weeks. She'd be heartbroken if I cancelled.",                       category: "funny" },
+    { text: "I've been personally advised by my future self not to attend. She seemed very relieved.",                           category: "funny" },
+    { text: "I'm in the middle of a very important multi-season TV commitment. The characters are depending on me.",              category: "funny" },
+    { text: "My social battery is currently at 3% and entering power-saving mode. I'll be fully charged by next month.",         category: "funny" },
+    { text: "I would, but I've recently taken a vow to only attend events within a 5-minute walk of my bed.",                    category: "funny" },
+    { text: "My dog gave me a look this morning and I've promised to investigate what it means. It could take days.",             category: "funny" },
+    { text: "I'm afraid I've overextended my 'going places' budget for the foreseeable future.",                                  category: "funny" },
+    { text: "I checked my calendar and unfortunately that's during my scheduled time to not be there.",                          category: "funny" },
+    { text: "As much as I'd love to, I have a standing appointment with doing absolutely nothing.",                               category: "funny" },
+  ];
+
+  const categoryMeta = {
+    professional: { label: "Firm & Professional", cls: "badge-professional" },
+    graceful:     { label: "Socially Graceful",   cls: "badge-graceful"     },
+    funny:        { label: "Lighthearted & Funny", cls: "badge-funny"        },
+  };
+
+  let count = 0;
+  let lastIndex = -1;
+
+  function generate() {
+    const textEl  = document.getElementById('reason-text');
+    const badgeEl = document.getElementById('category-badge');
+
+    /*
+    // pick a different reason each time
+    let idx;
+    do { idx = Math.floor(Math.random() * reasons.length); } while (idx === lastIndex);
+    lastIndex = idx;
+
+    const chosen = reasons[idx];
+    const meta   = categoryMeta[chosen.category];*/
+    
+
+    fetch('https://naas.isalman.dev/no')
+ 	 .then(response => {
+      		  if (!response.ok) {
+     			 throw new Error('Network response was not ok');
+   		 }
+        return response.json();
+  	})
+  	.then(data => {
+    		console.log(data);
+   		 textEl.textContent = data.reason;
+ 	 })
+ 	 .catch(error => {
+   	 // Handle any errors that occurred during the fetch operation
+  		  console.error('Error:', error);
+     });
+
+
+    textEl.classList.add('fade-out');
+
+    setTimeout(() => {
+      //textEl.textContent = chosen.text;
+      //badgeEl.textContent = meta.label;
+      //badgeEl.className   = `category-badge ${meta.cls}`;
+      textEl.classList.remove('fade-out');
+      count++;
+      document.getElementById('refusal-count').textContent = count;
+
+      // reset copy button
+      const copyBtn = document.getElementById('copy-btn');
+      copyBtn.classList.remove('copied');
+      copyBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copy`;
+    }, 350);
+  }
+
+  function copyReason() {
+    const text = document.getElementById('reason-text').textContent;
+    if (text.includes('Click the button')) return;
+
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById('copy-btn');
+      btn.classList.add('copied');
+      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Copied!`;
+    });
+  }
+</script>
+</body>
+</html>
