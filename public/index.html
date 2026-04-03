@@ -13,6 +13,13 @@
   <!-- ── HEADER ──────────────────────────────────────────────────────── -->
   <header class="app-header">
     <div class="header-left">
+      <button class="btn-icon hamburger-btn" id="sidebarToggle" title="Team members" aria-label="Toggle team members">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor">
+          <rect x="2" y="3.5" width="14" height="1.5" rx="1"/>
+          <rect x="2" y="8.25" width="14" height="1.5" rx="1"/>
+          <rect x="2" y="13" width="14" height="1.5" rx="1"/>
+        </svg>
+      </button>
       <div class="app-logo">
         <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
           <rect width="28" height="28" rx="6" fill="#0052CC"/>
@@ -32,11 +39,14 @@
     </div>
   </header>
 
+  <!-- ── SIDEBAR BACKDROP (mobile) ──────────────────────────────────── -->
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
   <!-- ── MAIN LAYOUT ─────────────────────────────────────────────────── -->
   <div class="app-body">
 
     <!-- Sidebar: Team Members -->
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
         <h2 class="sidebar-title">Team Members</h2>
         <button class="btn-icon" id="toggleAddMember" title="Add member">

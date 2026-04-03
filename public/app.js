@@ -200,6 +200,31 @@ function hideAddMemberForm() {
   document.getElementById('addMemberForm').style.display = 'none';
 }
 
+// ── Mobile sidebar drawer ─────────────────────────────────────────────────
+function openMobileSidebar() {
+  document.getElementById('sidebar').classList.add('mobile-open');
+  document.getElementById('sidebarBackdrop').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeMobileSidebar() {
+  document.getElementById('sidebar').classList.remove('mobile-open');
+  document.getElementById('sidebarBackdrop').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function isMobile() {
+  return window.matchMedia('(max-width: 640px)').matches;
+}
+
+function toggleMobileSidebar() {
+  if (document.getElementById('sidebar').classList.contains('mobile-open')) {
+    closeMobileSidebar();
+  } else {
+    openMobileSidebar();
+  }
+}
+
 // ── Board ─────────────────────────────────────────────────────────────────
 function renderBoard() {
   const board = document.getElementById('board');
@@ -346,6 +371,7 @@ async function openTaskModal(taskId) {
   const task = state.tasks.find(t => t.id === taskId);
   if (!task) return;
   state.activeTaskId = taskId;
+  if (isMobile()) closeMobileSidebar();
 
   // Populate fields
   document.getElementById('modalTitle').value       = task.title;
@@ -428,6 +454,7 @@ async function deleteTask() {
 
 // ── Add Task Modal ────────────────────────────────────────────────────────
 function openAddTaskModal(preselectedStatus) {
+  if (isMobile()) closeMobileSidebar();
   document.getElementById('addTaskTitle').value       = '';
   document.getElementById('addTaskDescription').value = '';
   document.getElementById('addTaskDeadline').value    = '';
@@ -645,6 +672,10 @@ function toast(msg, type = '') {
 
 // ── Static event listeners ────────────────────────────────────────────────
 function attachStaticListeners() {
+  // Mobile sidebar drawer
+  document.getElementById('sidebarToggle').addEventListener('click', toggleMobileSidebar);
+  document.getElementById('sidebarBackdrop').addEventListener('click', closeMobileSidebar);
+
   // Sidebar toggle
   document.getElementById('toggleAddMember').addEventListener('click', toggleAddMemberForm);
   document.getElementById('addMemberBtn').addEventListener('click', addMember);

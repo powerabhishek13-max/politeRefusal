@@ -841,3 +841,174 @@ body {
 
 /* ── Misc utils ────────────────────────────────────────────────────────── */
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   RESPONSIVE / MOBILE
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* Use dynamic viewport height where supported */
+body { height: 100dvh; }
+
+/* Hamburger — hidden on desktop */
+.hamburger-btn { display: none; color: rgba(255,255,255,0.9); }
+.hamburger-btn:hover { background: rgba(255,255,255,.15); color: #fff; }
+
+/* Sidebar backdrop — hidden until activated on mobile */
+.sidebar-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(9,30,66,.5);
+  z-index: 150;
+}
+
+/* ── Tablet (≤ 900px): shrink sidebar ──────────────────────────────────── */
+@media (max-width: 900px) {
+  .sidebar {
+    width: 200px;
+    min-width: 200px;
+  }
+  .acting-as-select { min-width: 130px; }
+}
+
+/* ── Mobile (≤ 640px) ──────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+
+  /* Dynamic viewport so keyboard doesn't break layout */
+  body { overflow: hidden; height: 100dvh; }
+
+  /* ── Header ── */
+  .app-header { padding: 0 12px; gap: 8px; }
+  .hamburger-btn { display: inline-flex; }
+  .acting-as-label { display: none; }          /* hide label, keep select */
+  .acting-as-select {
+    min-width: 0;
+    max-width: 140px;
+    font-size: 0.8rem;
+    padding: 5px 6px;
+  }
+  .app-name { font-size: 1rem; }
+
+  /* ── Sidebar: becomes a fixed left-side drawer ── */
+  .sidebar {
+    position: fixed;
+    top: 52px;
+    left: 0;
+    bottom: 0;
+    width: 260px;
+    min-width: 260px;
+    z-index: 200;
+    transform: translateX(-100%);
+    transition: transform .25s ease;
+    box-shadow: var(--shadow-lg);
+    overflow-y: auto;
+  }
+
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
+  .sidebar-backdrop.active {
+    display: block;
+  }
+
+  /* Member remove always visible on touch (no hover) */
+  .member-remove { opacity: 1; }
+
+  /* ── Board: horizontal snap-scroll, one column per "page" ── */
+  .board-container {
+    padding: 12px 8px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .board {
+    gap: 8px;
+    min-width: unset;
+    align-items: flex-start;
+  }
+
+  .column {
+    width: calc(100vw - 32px);
+    min-width: calc(100vw - 32px);
+    scroll-snap-align: start;
+    max-height: calc(100dvh - 84px);
+  }
+
+  .column-title { font-size: 0.75rem; }
+
+  /* ── Modals: bottom-sheet style ── */
+  .modal-overlay {
+    padding: 0;
+    align-items: flex-end;
+  }
+
+  .modal {
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    max-height: 95dvh;
+    width: 100%;
+    max-width: 100%;
+    animation: slideUpMobile .25s ease;
+  }
+
+  @keyframes slideUpMobile {
+    from { transform: translateY(60px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+  }
+
+  .modal-header { padding: 16px 16px 12px; }
+  .modal-body   { padding: 16px; }
+  .modal-footer { padding: 12px 16px; flex-wrap: wrap; gap: 8px; }
+
+  /* Stack details + comments vertically */
+  .modal-columns {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .modal-comments-panel {
+    width: 100%;
+    min-width: 0;
+    border-left: none;
+    padding-left: 0;
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+  }
+
+  .comments-list { max-height: 200px; }
+
+  /* Assignee + deadline side by side → stacked */
+  .field-row { flex-direction: column; gap: 12px; }
+
+  /* Larger tap targets */
+  .btn { padding: 9px 14px; }
+  .btn-sm { padding: 8px 12px; font-size: 0.82rem; }
+
+  .form-input,
+  .form-select,
+  .form-textarea {
+    font-size: 1rem;   /* prevents iOS auto-zoom on focus */
+    padding: 9px 10px;
+  }
+
+  .comment-textarea { font-size: 1rem; }
+
+  /* Toast: center-bottom on mobile */
+  .toast-container {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+  }
+  .toast { max-width: 100%; text-align: center; }
+}
+
+/* ── Very small screens (≤ 360px) ─────────────────────────────────────── */
+@media (max-width: 360px) {
+  .column {
+    width: calc(100vw - 16px);
+    min-width: calc(100vw - 16px);
+  }
+  .acting-as-select { max-width: 110px; font-size: 0.75rem; }
+}
